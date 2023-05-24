@@ -11,7 +11,7 @@
         {
             "label": "Run tests",
             "type": "shell",
-            "command": "python manage.py test"
+            "command": "python manage.py test tests"
         }
     ]
 }

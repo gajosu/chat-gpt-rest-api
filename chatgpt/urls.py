@@ -17,5 +17,6 @@ from django.urls import path
 from chatgpt.views import *
 
 urlpatterns = [
-    path('ask/', ask),
+    path('conversation', ask),
+    path('conversation/<str:conversation_id>', delete_conversation),
 ]

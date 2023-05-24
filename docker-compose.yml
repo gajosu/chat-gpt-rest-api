@@ -1,10 +1,22 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./docker/App.Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     environment:
       - DEBUG=true
+      - CHATGPT_BASE_URL=http://proxy:9090/api/
     ports:
       - "8000:8000"
+
+  proxy:
+    build:
+      context: .
+      dockerfile: ./docker/Proxy.Dockerfile
+    volumes:
+      - .:/code
+    depends_on:
+      - web

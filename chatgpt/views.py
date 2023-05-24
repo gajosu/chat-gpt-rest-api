@@ -41,12 +41,8 @@ def ask(request: HttpRequest) -> JsonResponse:
     chatbot = get_chatbot(access_token)
 
     try:
-        print("Chatbot: ")
-        prev_text: str = ""
         for data in chatbot.ask(prompt, conversation_id):
-            message: str = data["message"][len(prev_text):]
-            print(message, end="", flush=True)
-            prev_text = data["message"]
+            pass
 
         return JsonResponse({
             "response": data

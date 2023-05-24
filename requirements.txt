@@ -2,3 +2,4 @@ Django>=3.0,<4.0
 psycopg2>=2.8
 revChatGPT>=5.1.0
 pylint>=2.17.4
+django-environ>=v0.10.0

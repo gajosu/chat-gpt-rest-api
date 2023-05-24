@@ -1,40 +1,43 @@
 # syntax=docker/dockerfile:1
-# FROM python:3
-# ENV PYTHONDONTWRITEBYTECODE=1
-# ENV PYTHONUNBUFFERED=1
-# WORKDIR /code
-# COPY requirements.txt /code/
-# RUN pip install -r requirements.txt
-# COPY . /code/
-
-
-# syntax=docker/dockerfile:1
 FROM python:3
 
-# Establece las variables de entorno para el usuario no root
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Crea un usuario no root y establece su directorio de inicio
 RUN useradd --create-home appuser
-WORKDIR /code
+WORKDIR /home/appuser/code
 
-# Copia los archivos requeridos y cambia la propiedad al usuario no root
-COPY --chown=appuser:appuser requirements.txt /code/
+# copy requirements.txt and install dependencies
+COPY --chown=appuser:appuser requirements.txt /home/appuser/code/
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --upgrade revChatGPT
 # install gunicorn
 RUN pip install gunicorn
 
-# Copia los archivos restantes y cambia la propiedad al usuario no root
-COPY --chown=appuser:appuser . /code/
+# Copy local code to the container image.
+COPY --chown=appuser:appuser . /home/appuser/code/
 
-# copia el archivo config a $HOME/.config/revChatGPT/config.json
+# Copy config file
 COPY --chown=appuser:appuser config.json /home/appuser/.config/revChatGPT/config.json
 
+# Install Oh My SH
+ENV SHELL /bin/zsh
+RUN apt-get update && apt-get install -y curl zsh
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# Cambia al usuario no root
+# Change to non-root privilege.
 USER appuser
 
-# Establece el directorio de trabajo para el usuario no root
-WORKDIR /code/
+# install powerlevel10k
+RUN git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
+
+RUN cd $HOME && curl -fsSLO https://raw.githubusercontent.com/romkatv/dotfiles-public/master/.purepower
+
+# zsh configuration
+ADD .zshrc $HOME
+
+# Set the working directory.
+WORKDIR /home/appuser/code/
+
+# Expose port 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "chatgpt.wsgi"]

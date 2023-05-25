@@ -21,15 +21,15 @@ class TestMessagesView(TestCase):
                 "current_node": None
             },
         ]
-        
+
         mock_chatbot_instance = mock.Mock(spec=Chatbot)
         mock_chatbot.return_value = mock_chatbot_instance
         mock_chatbot_instance.get_conversations.return_value = chats
-        
+
         client = Client()
-        
+
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
-        
+
         response = client.get(
             '/conversations',
             **auth_headers
@@ -40,7 +40,8 @@ class TestMessagesView(TestCase):
 
         self.assertEqual(data, chats)
 
-        mock_chatbot.assert_called_once_with(config={"access_token": "token123"})
+        mock_chatbot.assert_called_once_with(
+            config={"access_token": "token123"})
         mock_chatbot_instance.get_conversations.assert_called_once_with(
             limit=10,
             offset=0

@@ -11,11 +11,11 @@ class TestAskView(TestCase):
 
     @mock.patch('chatgpt.views.Chatbot')
     def test_missing_prompt(self, mock_chatbot):
-        
+
         client = Client()
-        
+
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
-        
+
         response = client.post(
             '/conversations/123/ask',
             **auth_headers
@@ -37,7 +37,7 @@ class TestAskView(TestCase):
 
         client = Client()
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
-        
+
         response = client.post(
             '/conversations/123/ask',
             {"prompt": "Hello"},
@@ -49,5 +49,7 @@ class TestAskView(TestCase):
 
         self.assertEqual(data['response'], {"message": "Hello World"})
 
-        mock_chatbot.assert_called_once_with(config={"access_token": "token123"})
-        mock_chatbot_instance.ask.assert_called_once_with("Hello", conversation_id="123")
+        mock_chatbot.assert_called_once_with(
+            config={"access_token": "token123"})
+        mock_chatbot_instance.ask.assert_called_once_with(
+            "Hello", conversation_id="123")

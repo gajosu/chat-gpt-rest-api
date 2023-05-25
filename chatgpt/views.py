@@ -17,6 +17,7 @@ def validate_prompt(prompt: Optional[str]) -> Optional[JsonResponse]:
         }, status=400)
     return None
 
+
 def get_chatbot(access_token: str) -> Chatbot:
     """
     Returns a Chatbot instance with the given access_token.
@@ -25,8 +26,10 @@ def get_chatbot(access_token: str) -> Chatbot:
         "access_token": access_token
     })
 
+
 def get_access_token(request: HttpRequest) -> str:
     return request.headers.get("Authorization")
+
 
 @require_http_methods(["POST"])
 def start_new_conversation(request: HttpRequest) -> JsonResponse:
@@ -50,6 +53,7 @@ def start_new_conversation(request: HttpRequest) -> JsonResponse:
         "response": data
     }, safe=False)
 
+
 @require_http_methods(["GET"])
 def get_conversations(request: HttpRequest) -> HttpResponse:
     """
@@ -58,14 +62,15 @@ def get_conversations(request: HttpRequest) -> HttpResponse:
     access_token = get_access_token(request)
     limit: int = int(request.GET.get("limit", 10))
     offset: int = int(request.GET.get("offset", 0))
-    
+
     chatbot = get_chatbot(access_token)
     conversations = chatbot.get_conversations(
         limit=limit,
         offset=offset
     )
-    
+
     return JsonResponse(conversations, safe=False)
+
 
 @require_http_methods(["GET"])
 def get_messages(request: HttpRequest, conversation_id: str) -> HttpResponse:
@@ -73,13 +78,14 @@ def get_messages(request: HttpRequest, conversation_id: str) -> HttpResponse:
     Gets all conversations.
     """
     access_token = get_access_token(request)
-    
+
     chatbot = get_chatbot(access_token)
     conversations = chatbot.get_msg_history(
         convo_id=conversation_id,
     )
-    
+
     return JsonResponse(conversations, safe=False)
+
 
 @require_http_methods(["POST"])
 def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
@@ -94,7 +100,6 @@ def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
         return error_response
 
     chatbot = get_chatbot(access_token)
-
 
     for data in chatbot.ask(prompt, conversation_id=conversation_id):
         pass
@@ -113,11 +118,11 @@ def delete_conversation(request: HttpRequest, conversation_id: str) -> HttpRespo
 
     chatbot = get_chatbot(access_token)
     chatbot.delete_conversation(conversation_id)
-    
+
     # Empty response
     return HttpResponse(status=204)
-    
-    
+
+
 @require_http_methods(["DELETE"])
 def delete_all_conversations(request: HttpRequest) -> HttpResponse:
     """
@@ -127,6 +132,5 @@ def delete_all_conversations(request: HttpRequest) -> HttpResponse:
 
     chatbot = get_chatbot(access_token)
     chatbot.clear_conversations()
-    
-    return HttpResponse(status=204)
 
+    return HttpResponse(status=204)

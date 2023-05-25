@@ -1,8 +1,9 @@
-from django.http import HttpRequest, JsonResponse, HttpResponse
-from django.views.decorators.http import require_http_methods
-from OpenAIAuth import Error as AuthError
-from revChatGPT.V1 import Chatbot
 from typing import Optional
+
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.views.decorators.http import require_http_methods
+from revChatGPT.V1 import Chatbot
+
 
 def validate_prompt(prompt: Optional[str]) -> Optional[JsonResponse]:
     """
@@ -95,7 +96,7 @@ def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
     chatbot = get_chatbot(access_token)
 
 
-    for data in chatbot.ask(prompt, conversation_id):
+    for data in chatbot.ask(prompt, conversation_id=conversation_id):
         pass
 
     return JsonResponse({
@@ -126,4 +127,6 @@ def delete_all_conversations(request: HttpRequest) -> HttpResponse:
 
     chatbot = get_chatbot(access_token)
     chatbot.clear_conversations()
+    
+    return HttpResponse(status=204)
 

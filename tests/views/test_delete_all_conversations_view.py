@@ -5,7 +5,7 @@ from django.test import Client, RequestFactory, TestCase
 from revChatGPT.V1 import Chatbot
 
 
-class TestDeleteConversationView(TestCase):
+class TestDeleteAllConversationsView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
@@ -16,8 +16,9 @@ class TestDeleteConversationView(TestCase):
         
         client = Client()
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
+
         response = client.delete(
-            '/conversations/123',
+            '/conversations/all',
             **auth_headers
         )
 
@@ -25,4 +26,4 @@ class TestDeleteConversationView(TestCase):
         self.assertIsInstance(response, HttpResponse)
 
         mock_chatbot.assert_called_once_with(config={"access_token": "token123"})
-        mock_chatbot_instance.delete_conversation.assert_called_once_with('123')
+        mock_chatbot_instance.clear_conversations.assert_called_once()

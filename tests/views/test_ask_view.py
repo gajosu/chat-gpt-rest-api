@@ -5,7 +5,7 @@ from django.test import Client, RequestFactory, TestCase
 from revChatGPT.V1 import Chatbot
 
 
-class TestStartConversationView(TestCase):
+class TestAskView(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
@@ -17,7 +17,7 @@ class TestStartConversationView(TestCase):
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
         
         response = client.post(
-            '/conversations/new',
+            '/conversations/123/ask',
             **auth_headers
         )
 
@@ -28,7 +28,7 @@ class TestStartConversationView(TestCase):
         mock_chatbot.assert_not_called()
 
     @mock.patch('chatgpt.views.Chatbot')
-    def test_new_conversation_view(self, mock_chatbot):
+    def test_ask_view(self, mock_chatbot):
         mock_chatbot_instance = mock.Mock(spec=Chatbot)
         mock_chatbot.return_value = mock_chatbot_instance
         mock_chatbot_instance.ask.return_value = [
@@ -39,7 +39,7 @@ class TestStartConversationView(TestCase):
         auth_headers = {"HTTP_AUTHORIZATION": 'token123'}
         
         response = client.post(
-            '/conversations/new',
+            '/conversations/123/ask',
             {"prompt": "Hello"},
             **auth_headers
         )
@@ -50,4 +50,4 @@ class TestStartConversationView(TestCase):
         self.assertEqual(data['response'], {"message": "Hello World"})
 
         mock_chatbot.assert_called_once_with(config={"access_token": "token123"})
-        mock_chatbot_instance.ask.assert_called_once_with("Hello")
+        mock_chatbot_instance.ask.assert_called_once_with("Hello", conversation_id="123")

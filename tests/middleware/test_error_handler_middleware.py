@@ -5,8 +5,6 @@ from django.test import Client, TestCase, override_settings
 from OpenAIAuth import Error as AuthError
 from revChatGPT.V1 import Chatbot
 
-from chatgpt.views import *
-
 
 class TestErrorHandlerMiddleware(TestCase):
 
@@ -28,7 +26,7 @@ class TestErrorHandlerMiddleware(TestCase):
             )
 
             response = client.post(
-                path='/conversations',
+                path='/conversations/new',
                 data={'prompt': 'Hello'},
             )
 

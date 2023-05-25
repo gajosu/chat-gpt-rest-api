@@ -3,8 +3,6 @@ from unittest import mock
 
 from django.test import Client, RequestFactory, TestCase, override_settings
 
-from chatgpt.views import *
-
 
 class TestAccessTokenMiddlewares(TestCase):
     def setUp(self):

@@ -150,7 +150,6 @@ Response: `200`
 ]
 ```
 
-
 ## Authentication
 The API requires authentication using an access token. You need to include the Authorization header with the value set to your access token in each request.
 #### Request Headers
@@ -188,7 +187,7 @@ To get started with the Chat GPT API, follow these steps:
 
 ## License
 
-This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the terms of the GPL-2.0 license. See the [LICENSE](LICENSE) file for details.
 
 ## Disclaimers
 

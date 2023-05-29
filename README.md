@@ -182,7 +182,7 @@ To get started with the Chat GPT API, follow these steps:
     python manage.py runserver
     ```
 
-3. You can now send requests to the API at `http://localhost:8000/ask`
+3. You can now send requests to the API at `http://localhost:8000`
 
 
 ## License

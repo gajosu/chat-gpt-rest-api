@@ -39,15 +39,19 @@ def start_new_conversation(request: HttpRequest) -> JsonResponse:
 
     access_token = get_access_token(request)
     prompt: Optional[str] = request.POST.get("prompt", None)
+    title = request.POST.get("title", None)
 
     error_response = validate_prompt(prompt)
     if error_response:
         return error_response
 
     chatbot = get_chatbot(access_token)
-
-    for data in chatbot.ask(prompt):
-        pass
+    
+    parts = list(chatbot.ask(prompt))
+    data = parts[-1]
+    
+    if title is not None:
+        chatbot.change_title(data["conversation_id"], title)
 
     return JsonResponse({
         "response": data
@@ -101,8 +105,8 @@ def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
 
     chatbot = get_chatbot(access_token)
 
-    for data in chatbot.ask(prompt, conversation_id=conversation_id):
-        pass
+    parts = list(chatbot.ask(prompt, conversation_id=conversation_id))
+    data = parts[-1]
 
     return JsonResponse({
         "response": data

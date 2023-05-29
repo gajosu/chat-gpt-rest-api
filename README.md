@@ -7,7 +7,7 @@ This project provides a REST API for interacting with Chat GPT, a conversational
 - [Api documentation](#api-documentation)
   - [Get Conversations](#get-conversations)
   - [New Conversation](#new-conversation)
-  - [Ask](#ask-endpoint)
+  - [Ask](#ask)
   - [Delete Conversation](#delete-conversation)
   - [Delete All Conversations](#delete-all-conversations)
   - [Get Messages](#get-messages)

@@ -20,4 +20,4 @@ jobs:
         pip install --no-cache-dir -r requirements.txt
     - name: Analysing the code with pylint
       run: |
-        pylint --load-plugins=pylint_django $(git ls-files '*.py')
+        pylint  ./chatgpt

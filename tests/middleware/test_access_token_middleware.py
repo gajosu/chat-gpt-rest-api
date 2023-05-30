@@ -13,7 +13,9 @@ class TestAccessTokenMiddlewares(TestCase):
         """
         Test that the access token middleware returns a 401 response if the access token is missing
         """
-        with override_settings(MIDDLEWARE=['chatgpt.middleware.access_token.AccessTokenMiddleware']):
+        with override_settings(
+            MIDDLEWARE=['chatgpt.middleware.access_token.AccessTokenMiddleware']
+            ):
             client = Client()
 
             response = client.post('/conversations')

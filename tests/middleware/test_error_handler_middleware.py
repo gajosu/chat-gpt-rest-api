@@ -1,8 +1,8 @@
 import json
 from unittest import mock
-from revChatGPT.typings import Error as ChatbotError
 
 from django.test import Client, TestCase, override_settings
+from revChatGPT.typings import Error as ChatbotError
 from revChatGPT.V1 import Chatbot
 
 
@@ -13,13 +13,15 @@ class TestErrorHandlerMiddleware(TestCase):
         """
         Test that the error handler middleware catches OpenAIAuth errors and returns a 500 response
         """
-        with override_settings(MIDDLEWARE=['chatgpt.middleware.error_handler.ErrorHandlerMiddleware']):
+        with override_settings(
+            MIDDLEWARE=['chatgpt.middleware.error_handler.ErrorHandlerMiddleware']
+            ):
             client = Client()
 
             mock_chatbot_instance = mock.Mock(spec=Chatbot)
             mock_chatbot.return_value = mock_chatbot_instance
 
-            errorResponse = {
+            error_response = {
                 "location": "location",
                 "status_code": 500,
                 "details": "details"
@@ -27,7 +29,7 @@ class TestErrorHandlerMiddleware(TestCase):
 
             mock_chatbot_instance.ask.side_effect = ChatbotError(
                 source="source",
-                message=json.dumps(errorResponse),
+                message=json.dumps(error_response),
             )
 
             response = client.post(
@@ -39,4 +41,4 @@ class TestErrorHandlerMiddleware(TestCase):
 
             data = json.loads(response.content)
 
-            self.assertEqual(data['error'], errorResponse)
+            self.assertEqual(data['error'], error_response)

@@ -1,0 +1,16 @@
+[MASTER]
+
+max-line-length = 80
+
+[MESSAGES CONTROL]
+
+disable = C0330, C0326, C0103
+
+enable = 
+    warning,
+    error
+
+[BASIC]
+
+good-names = i, j, k, ex, Run, _ 
+bad-names = foo, bar, baz

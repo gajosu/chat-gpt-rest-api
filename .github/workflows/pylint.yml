@@ -17,8 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pylint
-        pip install pylint-django
+        pip install --no-cache-dir -r requirements.txt
     - name: Analysing the code with pylint
       run: |
         pylint --load-plugins=pylint_django $(git ls-files '*.py')

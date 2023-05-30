@@ -14,7 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from chatgpt.views import start_new_conversation, get_conversations, delete_all_conversations, delete_conversation, ask, get_messages
+from chatgpt.views import (
+    start_new_conversation,
+    get_conversations,
+    delete_all_conversations,
+    delete_conversation,
+    ask,
+    get_messages
+)
 
 urlpatterns = [
     path('conversations', get_conversations, name="get_conversations"),

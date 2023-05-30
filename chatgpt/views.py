@@ -1,3 +1,7 @@
+"""
+Views
+"""
+
 from typing import Optional
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -28,6 +32,9 @@ def get_chatbot(access_token: str) -> Chatbot:
 
 
 def get_access_token(request: HttpRequest) -> str:
+    """
+    Returns the access token from the request.
+    """
     return request.headers.get("Authorization")
 
 
@@ -46,10 +53,9 @@ def start_new_conversation(request: HttpRequest) -> JsonResponse:
         return error_response
 
     chatbot = get_chatbot(access_token)
-    
     parts = list(chatbot.ask(prompt))
     data = parts[-1]
-    
+
     if title is not None:
         chatbot.change_title(data["conversation_id"], title)
 

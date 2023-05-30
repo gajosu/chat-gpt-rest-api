@@ -1,16 +1,10 @@
 [MASTER]
+load-plugins=pylint_django
 
-max-line-length = 80
+[TYPECHECK]
+# Configura el módulo para el descubrimiento de los archivos Django
+init-hook='import sys; sys.path.append("./chatgpt")'
 
 [MESSAGES CONTROL]
-
-disable = C0330, C0326, C0103
-
-enable = 
-    warning,
-    error
-
-[BASIC]
-
-good-names = i, j, k, ex, Run, _ 
-bad-names = foo, bar, baz
+# Habilita las advertencias específicas de Django
+enable=django-specific-checks

@@ -20,5 +20,4 @@ jobs:
         pip install --no-cache-dir -r requirements.txt
     - name: Analysing the code with pylint
       run: |
-        pylint  ./chatgpt
-        pylint  ./tests
+        pylint  ./chatgpt ./tests

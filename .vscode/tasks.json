@@ -12,6 +12,11 @@
             "label": "Run tests",
             "type": "shell",
             "command": "python manage.py test tests"
+        },
+        {
+            "label": "Lint",
+            "type": "shell",
+            "command": "pylint ./chatgpt ./tests"
         }
     ]
 }

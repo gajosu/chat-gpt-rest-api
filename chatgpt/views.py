@@ -47,13 +47,20 @@ def start_new_conversation(request: HttpRequest) -> JsonResponse:
     access_token = get_access_token(request)
     prompt: Optional[str] = request.POST.get("prompt", None)
     title = request.POST.get("title", None)
+    model: str = request.POST.get("model", "")
+    autocontinue: bool = request.POST.get("autocontinue", "false").lower() == "true"
 
     error_response = validate_prompt(prompt)
     if error_response:
         return error_response
 
     chatbot = get_chatbot(access_token)
-    parts = list(chatbot.ask(prompt))
+    parts = list(chatbot.ask(
+        prompt=prompt,
+        model=model,
+        autocontinue=autocontinue
+    ))
+
     data = parts[-1]
 
     if title is not None:
@@ -104,6 +111,9 @@ def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
     """
     access_token = get_access_token(request)
     prompt: Optional[str] = request.POST.get("prompt", None)
+    parent_id: str = request.POST.get("parent_id", "")
+    model: str = request.POST.get("model", "")
+    autocontinue: bool = request.POST.get("autocontinue", "false").lower() == "true"
 
     error_response = validate_prompt(prompt)
     if error_response:
@@ -111,7 +121,14 @@ def ask(request: HttpRequest, conversation_id: str) -> JsonResponse:
 
     chatbot = get_chatbot(access_token)
 
-    parts = list(chatbot.ask(prompt, conversation_id=conversation_id))
+    parts = list(chatbot.ask(
+        prompt=prompt,
+        conversation_id=conversation_id,
+        parent_id=parent_id,
+        model=model,
+        autocontinue=autocontinue
+    ))
+
     data = parts[-1]
 
     return JsonResponse({

@@ -48,6 +48,8 @@ POST `/conversations/new`
 |------------------|--------|----------|----------------------------------------|
 | `prompt`         | string | Yes      | The prompt message for the conversation |
 | `title`          | string | No       | The title of the conversation |
+| `model`          | string | No       | The model to use for the conversation |
+| `autocontinue`   | string | No       | Whether to automatically continue the conversation, must be `true` or `false` |
 
 Response: `201`
 ```json
@@ -81,6 +83,9 @@ POST `/conversations/{conversation_id}/ask`
 | Parameter        | Type   | Required | Description                            |
 |------------------|--------|----------|----------------------------------------|
 | `prompt`         | string | Yes      | The prompt message for the conversation |
+| `parent_id`      | string | No       | UUID for the message to continue on |
+| `model`          | string | No       | The model to use for the conversation |
+| `autocontinue`   | string | No       | Whether to automatically continue the conversation, must be `true` or `false` |
 
 
 Response: `201`
